@@ -123,3 +123,9 @@ Specialization: Artificial Intelligence and Machine Learning
 ## 📚 Dataset
 
 **UNSW-NB15** — a network intrusion detection dataset used for model development and evaluation.
+
+## 📸 Live Dashboard
+
+![ARGUS Live Dashboard](dashboard.png)
+
+*ARGUS monitoring live network traffic, displaying traffic classifications, confidence scores, and Telegram notification status.*
