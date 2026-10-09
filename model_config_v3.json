@@ -1,0 +1,86 @@
+{
+  "model": "ARGUS V3 XGBoost Domain-Adapted",
+  "features": [
+    "dur",
+    "proto",
+    "service",
+    "state",
+    "spkts",
+    "dpkts",
+    "sbytes",
+    "dbytes",
+    "rate",
+    "sttl",
+    "dttl",
+    "sload",
+    "dload",
+    "sloss",
+    "dloss",
+    "sinpkt",
+    "dinpkt",
+    "sjit",
+    "djit",
+    "swin",
+    "stcpb",
+    "dtcpb",
+    "dwin",
+    "tcprtt",
+    "synack",
+    "ackdat",
+    "smean",
+    "dmean",
+    "trans_depth",
+    "response_body_len",
+    "ct_srv_src",
+    "ct_state_ttl",
+    "ct_dst_ltm",
+    "ct_src_dport_ltm",
+    "ct_dst_sport_ltm",
+    "ct_dst_src_ltm",
+    "is_ftp_login",
+    "ct_ftp_cmd",
+    "ct_flw_http_mthd",
+    "ct_src_ltm",
+    "ct_srv_dst",
+    "is_sm_ips_ports"
+  ],
+  "categorical_features": [
+    "proto",
+    "service",
+    "state"
+  ],
+  "preprocessing": {
+    "categorical": "LabelEncoder fitted on training only",
+    "numeric": "StandardScaler fitted on training only"
+  },
+  "training_data": {
+    "windows_benign_train": 1132,
+    "unsw_attack_train": 36265,
+    "total": 37397,
+    "scale_pos_weight": 0.031214669791810284
+  },
+  "test_data": {
+    "windows_benign_test": 284,
+    "unsw_attack_test": 9067,
+    "total": 9351
+  },
+  "split_strategy": {
+    "windows": "chronological 80/20",
+    "unsw_attacks": "stratified random 80/20 seed=42"
+  },
+  "threshold": 0.5,
+  "metrics": {
+    "accuracy": 99.99,
+    "precision": 100.0,
+    "recall": 99.99,
+    "f1": 99.99,
+    "fpr": 0.0,
+    "fnr": 0.01,
+    "tn": 284,
+    "fp": 0,
+    "fn": 1,
+    "tp": 9066
+  },
+  "windows_benign_fpr": 0.0,
+  "unsw_attack_detection": 99.99
+}
