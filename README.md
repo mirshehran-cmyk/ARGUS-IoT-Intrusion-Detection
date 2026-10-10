@@ -72,7 +72,7 @@ python -m venv .venv
 
 ### 3. Install dependencies
 
-Install the Python packages required by the project. If a `requirements.txt` file is available, run:
+Install the project dependencies:
 
 ```bash
 pip install -r requirements.txt

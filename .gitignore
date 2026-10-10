@@ -46,3 +46,9 @@ validation_predictions_reduced.csv
 validation_predictions_v2.csv
 xgb_model_reduced.json
 xgb_model_v2.json
+
+# Keep project dependencies tracked
+!requirements.txt
+
+# Local test environment
+.venv_test/
