@@ -74,19 +74,34 @@ with open("label_encoders.pkl", "rb") as f:
 
 print("Model, scaler and encoders loaded successfully")
 
+
 df = pd.read_csv("UNSW_NB15_testing-set.csv")
 
-known_proto = set(encoders["proto"].classes_)
-known_service = set(encoders["service"].classes_)
-known_state = set(encoders["state"].classes_)
+# Normalize categorical values before filtering
+for col in ["proto", "service", "state"]:
+    df[col] = df[col].astype(str).str.strip().str.lower()
+
+known_proto = {
+    str(value).strip().lower()
+    for value in encoders["proto"].classes_
+}
+known_service = {
+    str(value).strip().lower()
+    for value in encoders["service"].classes_
+}
+known_state = {
+    str(value).strip().lower()
+    for value in encoders["state"].classes_
+}
 
 df = df[
-    df["proto"].astype(str).isin(known_proto)
-    & df["service"].astype(str).isin(known_service)
-    & df["state"].astype(str).isin(known_state)
+    df["proto"].isin(known_proto)
+    & df["service"].isin(known_service)
+    & df["state"].isin(known_state)
 ].copy()
 
 print(f"Dataset loaded: {len(df)} records")
+
 
 SCALER_FEATURE_NAMES = list(getattr(scaler, "feature_names_in_", []))
 if SCALER_FEATURE_NAMES:
@@ -306,13 +321,17 @@ def _encode_and_scale_live(features_dict):
     row = {}
     for feat_name in MODEL_FEATURE_ORDER:
         value = features_dict.get(feat_name)
+     
         if feat_name in CATEGORICAL_FEATURES:
-            value = str(value) if value is not None else ""
-            classes = set(encoders[feat_name].classes_)
+            value = str(value).strip().lower() if value is not None else ""
+            classes = set(str(c).strip().lower() for c in encoders[feat_name].classes_)
+
             if value not in classes:
-                _log_live(f"Unknown {feat_name}='{value}', using first class")
-                value = encoders[feat_name].classes_[0]
+                _log_live(f"Unknown {feat_name}='{value}', skipping prediction")
+                return None
+
             row[feat_name] = int(encoders[feat_name].transform([value])[0])
+
         else:
             row[feat_name] = float(value) if value is not None else 0.0
 
