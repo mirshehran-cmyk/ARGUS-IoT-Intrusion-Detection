@@ -428,12 +428,18 @@
 // ===== HELPERS =====// ===== HELPERS =====
         function fmtPct(n) { return n.toFixed(1) + '%'; }
         function fmtConf(n) { return n.toFixed(1); }
-        function severityFromConf(conf) {
+        function severityFromConf(conf, isAttack) {
+            if (!isAttack) {
+                return { level: 'low', label: 'NORMAL' };
+            }
+
             if (conf >= 99) return { level: 'high', label: 'CRITICAL' };
             if (conf >= 95) return { level: 'medium', label: 'HIGH' };
             return { level: 'low', label: 'LOW' };
         }
+
         function updateSessionStats(data) {
+     function updateSessionStats(data) {
             if (!sessionStart) sessionStart = Date.now();
             const duration = ((Date.now() - sessionStart) / 1000).toFixed(1);
             const rate = (data.total / (duration || 1)).toFixed(2);
@@ -491,7 +497,7 @@
         }
         function updateCurrentThreat(data) {
             const isAtk = data.is_attack;
-            const sev = severityFromConf(data.confidence);
+           const sev = severityFromConf(data.confidence, isAtk);
             els.threatStatus.textContent = isAtk ? '🚨 ATTACK DETECTED' : '✅ NORMAL TRAFFIC';
             els.threatStatus.className = 'threat-status ' + (isAtk ? 'attack' : 'normal');
             els.threatConf.textContent = fmtConf(data.confidence);
