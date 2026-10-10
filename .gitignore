@@ -52,3 +52,5 @@ xgb_model_v2.json
 
 # Local test environment
 .venv_test/
+
+dashboard_local_backup.png
